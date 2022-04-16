@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sharp/screens/product_detail.dart';
+import 'package:shop_sharp/providers/cart.dart';
+import 'package:shop_sharp/screens/cart_screen.dart';
+import 'package:shop_sharp/screens/product_detail_screen.dart';
 import '/screens/product_overview.dart';
 import './providers/products_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,13 +15,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Products(),
+    //MultiProvider to set up multiple providers across the app (Products and Cart), set up at the top of the widget tree to be accessible across the app.
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Products(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
+        )
+      ],
       child: MaterialApp(
-        theme: ThemeData(fontFamily: 'Lato', colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(secondary: Colors.deepOrange)),
-        home: ProductOverview(),
+        theme: ThemeData(
+          primaryColor: Colors.purple,
+          fontFamily: 'Lato',
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(
+            secondary: Colors.deepOrange,
+          ),
+        ),
+        home: const ProductOverview(),
         routes: {
           ProductDetail.routeName: (ctx) => const ProductDetail(),
+          CartScreen.routeName: (ctx) => const CartScreen(),
         },
       ),
     );

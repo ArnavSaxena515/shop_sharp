@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shop_sharp/dummy_data.dart';
+import 'package:shop_sharp/screens/cart_screen.dart';
 
+import '../providers/cart.dart';
+import '../widgets/badge.dart';
 import '../widgets/products_grid.dart';
 
 enum FilterOptions { favorites, all }
@@ -19,6 +23,7 @@ class _ProductOverviewState extends State<ProductOverview> {
   bool _showFavorites = false;
   @override
   Widget build(BuildContext context) {
+    // final Cart cart = Provider.of<Cart>(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text("Shop Sharp"),
@@ -47,7 +52,23 @@ class _ProductOverviewState extends State<ProductOverview> {
                         ),
                         value: FilterOptions.all,
                       ),
-                    ])
+                    ]),
+            Consumer<Cart>(
+              builder: (BuildContext context, cart, Widget? child) {
+                return Badge(
+                  value: cart.cartCount.toString(),
+                  //cart.cartCount.toString(),
+                  child: child ?? const Icon(Icons.shopping_cart),
+                  color: Theme.of(context).colorScheme.secondary,
+                );
+              },
+              child: IconButton(
+                icon: const Icon(Icons.shopping_cart),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(CartScreen.routeName);
+                },
+              ),
+            ),
           ],
         ),
         body: ProductsGrid(

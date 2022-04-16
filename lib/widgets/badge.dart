@@ -1,10 +1,41 @@
 import 'package:flutter/material.dart';
 
+// Simple UI widget to display an icon along with some widget at the top right of it.
 class Badge extends StatelessWidget {
-  const Badge({Key key}) : super(key: key);
+  const Badge({Key? key, required this.child, required this.value, this.color = Colors.black87}) : super(key: key);
+  final Widget child;
+  final String value;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        child,
+        Positioned(
+          right: 8,
+          top: 8,
+          child: Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: color,
+            ),
+            constraints: const BoxConstraints(
+              minWidth: 16,
+              minHeight: 16,
+            ),
+            child: Text(
+              value,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 10,
+              ),
+            ),
+          ),
+        )
+      ],
+    );
   }
 }

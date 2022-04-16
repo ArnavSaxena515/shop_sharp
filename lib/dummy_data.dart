@@ -1,5 +1,6 @@
 import 'providers/product.dart';
 
+//Dummy data file to create and test the app, later to be fetched via http requests.
 // ignore: non_constant_identifier_names
 List<Product> DUMMY_PRODUCTS = [
   Product(
