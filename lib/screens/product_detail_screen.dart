@@ -5,8 +5,10 @@ import '../providers/product.dart';
 
 class ProductDetail extends StatelessWidget {
   static const routeName = "/product-detail";
+
   const ProductDetail({Key? key}) : super(key: key);
 
+//TODO finish this
   @override
   Widget build(BuildContext context) {
     String itemID = ModalRoute.of(context)!.settings.arguments as String;
@@ -16,7 +18,27 @@ class ProductDetail extends StatelessWidget {
       appBar: AppBar(
         title: Text(product.title),
       ),
-      body: Text("This is the product detail screen for ${product.description}"),
+      body: Column(
+        children: [
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(15),
+              topRight: Radius.circular(15),
+            ),
+            child: Card(
+              child: Column(
+                children: [
+                  Image.network(
+                    product.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                  Text("This is the product detail screen for ${product.description}"),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
