@@ -1,7 +1,9 @@
+// Display the items in shop in a grid form
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/dummy_data.dart';
 import 'package:shop_sharp/screens/cart_screen.dart';
+import 'package:shop_sharp/widgets/app_drawer.dart';
 
 import '../providers/cart.dart';
 import '../widgets/badge.dart';
@@ -13,6 +15,7 @@ class ProductOverview extends StatefulWidget {
   const ProductOverview({
     Key? key,
   }) : super(key: key);
+  static const routeName = '/product-overview';
 
   @override
   State<ProductOverview> createState() => _ProductOverviewState();
@@ -25,6 +28,7 @@ class _ProductOverviewState extends State<ProductOverview> {
   Widget build(BuildContext context) {
     // final Cart cart = Provider.of<Cart>(context);
     return Scaffold(
+        drawer: const AppDrawer(),
         appBar: AppBar(
           title: const Text("Shop Sharp"),
           actions: [
@@ -79,51 +83,51 @@ class _ProductOverviewState extends State<ProductOverview> {
   }
 }
 
-class ListViewBuilder extends StatefulWidget {
-  const ListViewBuilder({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<ListViewBuilder> createState() => _ListViewBuilderState();
-}
-
-class _ListViewBuilderState extends State<ListViewBuilder> {
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: DUMMY_PRODUCTS.length,
-      itemBuilder: (productOverviewScreenContext, index) => Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: Image.network(
-              DUMMY_PRODUCTS[index].imageUrl,
-              fit: BoxFit.cover,
-              width: 100,
-              height: 100,
-            ),
-            title: Text(DUMMY_PRODUCTS[index].title),
-            subtitle: Text("SUBTITLE"),
-            trailing: Column(
-              //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    DUMMY_PRODUCTS[index].checkFavorite() ? Icons.favorite : Icons.favorite_border,
-                    //color: Colors.white,
-                  ),
-                  onPressed: () {},
-                ),
-                IconButton(
-                  icon: const Icon(Icons.shopping_cart),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class ListViewBuilder extends StatefulWidget {
+//   const ListViewBuilder({
+//     Key? key,
+//   }) : super(key: key);
+//
+//   @override
+//   State<ListViewBuilder> createState() => _ListViewBuilderState();
+// }
+//
+// class _ListViewBuilderState extends State<ListViewBuilder> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListView.builder(
+//       itemCount: DUMMY_PRODUCTS.length,
+//       itemBuilder: (productOverviewScreenContext, index) => Card(
+//         child: Padding(
+//           padding: const EdgeInsets.all(8.0),
+//           child: ListTile(
+//             leading: Image.network(
+//               DUMMY_PRODUCTS[index].imageUrl,
+//               fit: BoxFit.cover,
+//               width: 100,
+//               height: 100,
+//             ),
+//             title: Text(DUMMY_PRODUCTS[index].title),
+//             subtitle: Text("SUBTITLE"),
+//             trailing: Column(
+//               //  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//               children: [
+//                 IconButton(
+//                   icon: Icon(
+//                     DUMMY_PRODUCTS[index].checkFavorite() ? Icons.favorite : Icons.favorite_border,
+//                     //color: Colors.white,
+//                   ),
+//                   onPressed: () {},
+//                 ),
+//                 IconButton(
+//                   icon: const Icon(Icons.shopping_cart),
+//                   onPressed: () {},
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

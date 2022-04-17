@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_sharp/providers/orders.dart';
 
 import '../providers/cart.dart';
 import '../widgets/cart_item_gesture_handler.dart';
 
-//Sccreen to display a user's cart with details of items they shopped and total costs
+//Screen to display a user's cart with details of items they shopped and total costs
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
   static const routeName = "/cart-screen";
@@ -25,28 +26,40 @@ class CartScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Total',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    // const SizedBox(
-                    //   width: 10,
-                    // ),
-                    const Spacer(),
                     Chip(
                       backgroundColor: Theme.of(context).primaryColor,
                       label: Text(
-                        "\$ ${cart.totalAmount.toStringAsFixed(2)}",
-                        style: const TextStyle(color: Colors.white),
+                        "Total:\t\$${cart.totalAmount.toStringAsFixed(2)}",
+                        style: const TextStyle(color: Colors.white, fontSize: 20),
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "ORDER NOW",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                    const Spacer(),
+                    Visibility(
+                      visible: cart.items.values.isNotEmpty,
+                      child: AbsorbPointer(
+                        absorbing: cart.items.values.isEmpty,
+                        child: TextButton(
+                          onPressed: () {
+                            Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
+                            cart.clearCart();
+                            showDialog(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                      backgroundColor: Theme.of(context).primaryColor,
+                                      content: const Text(
+                                        "Order Placed!\n Thank you for shopping with us",
+                                        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                      ),
+                                      //todo show order summary or something
+                                    )).then((value) => Navigator.of(context).pop());
+                          },
+                          child: const Text(
+                            "ORDER NOW",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          // style: ButtonStyleStyle(color: Theme.of(context).primaryColor),
+                        ),
                       ),
-                      // style: ButtonStyleStyle(color: Theme.of(context).primaryColor),
                     )
                   ],
                 ),
@@ -67,3 +80,4 @@ class CartScreen extends StatelessWidget {
     );
   }
 }
+//todo: when quantity reduced to 0, remove item from ui

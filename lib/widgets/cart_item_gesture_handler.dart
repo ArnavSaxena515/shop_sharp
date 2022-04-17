@@ -1,3 +1,5 @@
+//Widget to handle gestures on the cart display for cart screen
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +21,11 @@ class CartItemGestureHandler extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(ProductDetail.routeName, arguments: cartItem.productID),
       child: Consumer<Cart>(
+        // Cart Consumer
         builder: (_, cart, child) => Dismissible(
+          // widget that allows items to be dismissed from the UI
           onDismissed: (_) => cart.removeItem(id: cartItem.cartItemID),
-          direction: DismissDirection.endToStart,
+          direction: DismissDirection.endToStart, // control swipe direction
           background: Container(
             color: Theme.of(context).errorColor,
             child: const Icon(
@@ -30,16 +34,12 @@ class CartItemGestureHandler extends StatelessWidget {
             ),
             alignment: Alignment.centerRight,
           ),
-          key: ValueKey(cartItem.cartItemID),
+          key: ValueKey(cartItem.cartItemID), //dismissible widget requires unique key to work, causes bugs otherwise
           child: child ??
-              CartItemDisplay(
-                title: cartItem.title,
-                quantity: cartItem.quantity.toInt(),
-                price: cartItem.price,
-                id: cartItem.cartItemID,
-              ),
+              CartItemDisplay(title: cartItem.title, quantity: cartItem.quantity.toInt(), price: cartItem.price, id: cartItem.cartItemID, productID: cartItem.productID),
         ),
         child: CartItemDisplay(
+          productID: cartItem.productID,
           title: cartItem.title,
           quantity: cartItem.quantity.toInt(),
           price: cartItem.price,

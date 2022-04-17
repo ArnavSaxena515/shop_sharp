@@ -39,7 +39,7 @@ class ProductItem extends StatelessWidget {
             builder: (BuildContext context, value, Widget? child) => IconButton(
               icon: Icon(
                 value.checkFavorite() ? Icons.favorite : Icons.favorite_border,
-                color: Theme.of(context).colorScheme.secondary,
+                color: Colors.deepOrange,
                 //color: Colors.white,
               ),
               onPressed: () {
@@ -49,7 +49,7 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             icon: Icon(
-              Icons.shopping_cart,
+              Icons.add_shopping_cart_rounded,
               color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () {

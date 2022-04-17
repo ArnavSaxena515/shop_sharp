@@ -1,9 +1,12 @@
+//Display the details of a tapped product on the screen
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_sharp/providers/products_provider.dart';
 import '../providers/cart.dart';
 import '../providers/product.dart';
 import '../widgets/badge.dart';
+import '../widgets/quantity_setter.dart';
 import 'cart_screen.dart';
 
 class ProductDetail extends StatelessWidget {
@@ -11,16 +14,16 @@ class ProductDetail extends StatelessWidget {
 
   const ProductDetail({Key? key}) : super(key: key);
 
-//TODO finish this
   @override
   Widget build(BuildContext context) {
     String itemID = ModalRoute.of(context)!.settings.arguments as String;
     Product product = Provider.of<Products>(context).items.firstWhere((element) => element.id == itemID);
-    int quantity = 0;
-
+    //provider to get the product details of the nearest product in the widget tree
+    final AppBar appBar = AppBar();
+    final MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Shop Sharp"),
+        title: Text(product.title),
         actions: [
           Consumer<Cart>(
             builder: (BuildContext context, cart, Widget? child) {
@@ -50,11 +53,27 @@ class ProductDetail extends StatelessWidget {
             child: Card(
               child: Column(
                 children: [
-                  Image.network(
-                    product.imageUrl,
-                    fit: BoxFit.cover,
+                  GestureDetector(
+                    //If tapped, animation executed and the image takes over the screen for a zoomed view
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                        return ImageDisplay(
+                          imageUrl: product.imageUrl,
+                          productTitle: product.title,
+                        );
+                      }));
+                    },
+                    child: Hero(
+                      tag: 'imageHero',
+                      child: Image.network(
+                        product.imageUrl,
+                        fit: BoxFit.cover,
+                        height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.5,
+                      ),
+                    ),
                   ),
                   Container(
+                    height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.1,
                     margin: const EdgeInsets.all(15),
                     child: ListTile(
                       title: Text(
@@ -65,15 +84,18 @@ class ProductDetail extends StatelessWidget {
                       subtitle: Container(
                         margin: const EdgeInsets.all(10),
                         child: Text(
-                          "This is the product detail screen for ${product.description}",
+                          product.description,
                           textAlign: TextAlign.center,
                         ),
                       ),
                       trailing: Text("\$${product.price.toString()}"),
                     ),
                   ),
-                  QuantitySetter(
-                    itemID: itemID,
+                  SizedBox(
+                    height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.15,
+                    child: QuantitySetter(
+                      itemID: itemID,
+                    ),
                   ),
                 ],
               ),
@@ -85,58 +107,30 @@ class ProductDetail extends StatelessWidget {
   }
 }
 
-class QuantitySetter extends StatelessWidget {
-  const QuantitySetter({
-    Key? key,
-    required this.itemID,
-  }) : super(key: key);
-  final String itemID;
+class ImageDisplay extends StatelessWidget {
+  const ImageDisplay({Key? key, required this.imageUrl, required this.productTitle}) : super(key: key);
+  final String imageUrl;
+  final String productTitle;
 
   @override
   Widget build(BuildContext context) {
-    int quantity = 0;
-    Product product = Provider.of<Products>(context).items.firstWhere((element) => element.id == itemID);
-    return Consumer<Cart>(
-      builder: (_, cart, child) {
-        if (cart.items.containsKey(itemID)) {
-          quantity = cart.items[itemID]!.quantity;
-        }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text("Selected Quantity"),
-                IconButton(
-                    onPressed: () {
-                      cart.decreaseQuantity(itemID);
-                    },
-                    icon: Icon(
-                      Icons.remove_circle,
-                      color: Theme.of(context).primaryColor,
-                    )),
-                Text("${quantity.toString()}x"),
-                IconButton(
-                    onPressed: () {
-                      cart.addItem(productID: itemID, price: product.price, title: product.title);
-                    },
-                    icon: Icon(Icons.add_circle, color: Theme.of(context).primaryColor)),
-              ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(productTitle),
+      ),
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: Image.network(
+              imageUrl,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                "Item Total: \$${(quantity * product.price).toStringAsFixed(2)}",
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            )
-          ],
-        );
-      },
+          ),
+        ),
+      ),
     );
   }
 }

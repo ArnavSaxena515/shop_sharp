@@ -10,10 +10,9 @@ class Products with ChangeNotifier {
   }
 
   List<Product> get favoriteItems {
-    return items.where((element) => element.checkFavorite()).toList();
+    return items.where((item) => item.checkFavorite()).toList();
   }
 
-  void addProduct() {}
   Product findByID(String id) {
     return _items.firstWhere((element) => element.id == id);
   }

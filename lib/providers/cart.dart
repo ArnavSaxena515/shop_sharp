@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shop_sharp/models/cart_item.dart';
 
+//Cart Provider, manages all the data for the cart
 class Cart with ChangeNotifier {
-  final Map<String, CartItem> _items = {};
+  Map<String, CartItem> _items = {};
 
   Map<String, CartItem> get items {
     return {..._items};
   }
+  //getter for items
 
   int get cartCount {
     return _items.length;
   }
+  //getter for number of items in the cart
 
   double get totalAmount {
     double total = 0.0;
@@ -18,7 +21,7 @@ class Cart with ChangeNotifier {
       total += value.price * value.quantity;
     });
     return total;
-  }
+  } // get the total cost of all products combined
 
   void decreaseQuantity(String productID) {
     if (_items.containsKey(productID)) {
@@ -33,6 +36,7 @@ class Cart with ChangeNotifier {
     }
     notifyListeners();
   }
+  //function to decrease the quantity of an item in the cart, identified by productID
 
   void addItem({required String productID, required double price, required String title}) {
     if (_items.containsKey(productID)) {
@@ -59,8 +63,16 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
+//add an item to the cart
   void removeItem({required String id}) {
     _items.removeWhere((key, itemDetails) => itemDetails.cartItemID == id);
     notifyListeners();
   }
+  //function to remove an item in the cart, identified by Cart Item ID
+
+  void clearCart() {
+    _items = {};
+    notifyListeners();
+  }
+  //delete all items in cart
 }
