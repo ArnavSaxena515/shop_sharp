@@ -32,15 +32,16 @@ class CartItemDisplay extends StatelessWidget {
             //Consumer to access Products provider across this widget
             builder: (_, products, child) {
               final Product product = products.findByID(productID);
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                height: 100,
-                width: 100,
-                child: Image.network(
+              return CircleAvatar(
+                // decoration: BoxDecoration(
+                //   borderRadius: BorderRadius.circular(15),
+                // ),
+                // height: 100,
+                // width: 100,
+                radius: 30,
+                backgroundImage: NetworkImage(
                   product.imageUrl,
-                  fit: BoxFit.cover,
+                  //  fit: BoxFit.cover,
                 ),
               );
             },
@@ -52,7 +53,7 @@ class CartItemDisplay extends StatelessWidget {
             ),
           ),
           title: SizedBox(
-            child: FittedBox(child: Text(title)),
+            child: Text(title),
             width: mediaQuery.size.width * 0.2,
           ),
           trailing: SizedBox(

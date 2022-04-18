@@ -31,8 +31,11 @@ class Cart with ChangeNotifier {
               productID: productID,
               price: existingCartItem.price,
               title: existingCartItem.title,
-              quantity: existingCartItem.quantity - 1,
+              quantity: existingCartItem.quantity > 1 ? existingCartItem.quantity - 1 : 0,
               cartItemID: DateTime.now().toString()));
+    }
+    if (_items[productID]!.quantity == 0) {
+      _items.remove(productID);
     }
     notifyListeners();
   }
@@ -68,11 +71,21 @@ class Cart with ChangeNotifier {
     _items.removeWhere((key, itemDetails) => itemDetails.cartItemID == id);
     notifyListeners();
   }
+
   //function to remove an item in the cart, identified by Cart Item ID
 
   void clearCart() {
     _items = {};
     notifyListeners();
   }
-  //delete all items in cart
+//delete all items in cart
+
+// void removeSingleItem(String productID){
+//     if(!_items.containsKey(productID)) {
+//       return;
+//     }
+//     if(_items[productID]!.quantity>1){
+//       _items.update(productID, (existingCartItem) => null)
+//     }
+// }
 }

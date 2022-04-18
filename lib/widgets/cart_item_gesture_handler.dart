@@ -24,8 +24,29 @@ class CartItemGestureHandler extends StatelessWidget {
         // Cart Consumer
         builder: (_, cart, child) => Dismissible(
           // widget that allows items to be dismissed from the UI
+          confirmDismiss: (direction) {
+            return showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                      title: const Text("Are you sure?"),
+                      content: Text("Do you want to remove ${cartItem.title} from the cart?"),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(true);
+                            },
+                            child: const Text("Yes")),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(false);
+                            },
+                            child: const Text("No")),
+                      ],
+                    ));
+          },
           onDismissed: (_) => cart.removeItem(id: cartItem.cartItemID),
-          direction: DismissDirection.endToStart, // control swipe direction
+          direction: DismissDirection.endToStart,
+          // control swipe direction
           background: Container(
             color: Theme.of(context).errorColor,
             child: const Icon(
@@ -34,7 +55,8 @@ class CartItemGestureHandler extends StatelessWidget {
             ),
             alignment: Alignment.centerRight,
           ),
-          key: ValueKey(cartItem.cartItemID), //dismissible widget requires unique key to work, causes bugs otherwise
+          key: ValueKey(cartItem.cartItemID),
+          //dismissible widget requires unique key to work, causes bugs otherwise
           child: child ??
               CartItemDisplay(title: cartItem.title, quantity: cartItem.quantity.toInt(), price: cartItem.price, id: cartItem.cartItemID, productID: cartItem.productID),
         ),
