@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/providers/products_provider.dart';
-import 'package:shop_sharp/widgets/app_drawer.dart';
-import 'package:shop_sharp/widgets/user_added_product_item.dart';
+
+import '/providers/products_provider.dart';
+import '/widgets/app_drawer.dart';
+import '/widgets/user_added_product_item.dart';
 
 class UserProductScreen extends StatelessWidget {
   const UserProductScreen({Key? key}) : super(key: key);

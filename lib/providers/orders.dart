@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:shop_sharp/models/cart_item.dart';
+import '../models/cart_item.dart';
 
 class OrderItem {
   final String id;

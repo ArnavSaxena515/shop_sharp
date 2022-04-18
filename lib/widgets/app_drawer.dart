@@ -1,10 +1,10 @@
 //App drawer widget to be shared across all app screens where required
 
 import 'package:flutter/material.dart';
-import 'package:shop_sharp/screens/orders_screen.dart';
-import 'package:shop_sharp/screens/product_overview.dart';
-import 'package:shop_sharp/screens/user_products_screen.dart';
 
+import '/screens/orders_screen.dart';
+import '/screens/product_overview.dart';
+import '/screens/user_products_screen.dart';
 import '../screens/cart_screen.dart';
 import 'drawer_button.dart';
 

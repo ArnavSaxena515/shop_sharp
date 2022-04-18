@@ -1,11 +1,11 @@
 // Widget to display details of past orders placed
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shop_sharp/models/cart_item.dart';
-import 'package:shop_sharp/providers/orders.dart';
+
+import '/models/cart_item.dart';
+import '/providers/orders.dart';
 
 class OrderDisplay extends StatefulWidget {
   const OrderDisplay({Key? key, required this.orderItem}) : super(key: key);

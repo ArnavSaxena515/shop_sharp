@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sharp/providers/cart.dart';
-import 'package:shop_sharp/providers/orders.dart';
-import 'package:shop_sharp/screens/cart_screen.dart';
-import 'package:shop_sharp/screens/orders_screen.dart';
-import 'package:shop_sharp/screens/product_detail_screen.dart';
-import 'package:shop_sharp/screens/user_products_screen.dart';
+import 'package:provider/provider.dart';
+
+import '/providers/cart.dart';
+import '/providers/orders.dart';
+import '/screens/cart_screen.dart';
+import '/screens/orders_screen.dart';
+import '/screens/product_detail_screen.dart';
+import '/screens/user_products_screen.dart';
 import '/screens/product_overview.dart';
 import './providers/products_provider.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());

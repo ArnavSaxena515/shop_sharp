@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/screens/cart_screen.dart';
-import 'package:shop_sharp/widgets/app_drawer.dart';
 
+import '/screens/cart_screen.dart';
+import '/widgets/app_drawer.dart';
 import '../providers/cart.dart';
 import '../widgets/badge.dart';
 import '../widgets/products_grid.dart';
@@ -24,6 +24,7 @@ class ProductOverview extends StatefulWidget {
 class _ProductOverviewState extends State<ProductOverview> {
   // final List<Product> loadedProducts;
   bool _showFavorites = false;
+
   @override
   Widget build(BuildContext context) {
     // final Cart cart = Provider.of<Cart>(context);

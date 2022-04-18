@@ -2,7 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/providers/products_provider.dart';
+
+import '/providers/products_provider.dart';
 import '../providers/cart.dart';
 import '../providers/product.dart';
 import '../widgets/badge.dart';

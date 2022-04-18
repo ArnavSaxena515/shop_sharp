@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/providers/orders.dart';
 
+import '/providers/orders.dart';
 import '../widgets/order_display.dart';
 
 class OrdersScreen extends StatelessWidget {

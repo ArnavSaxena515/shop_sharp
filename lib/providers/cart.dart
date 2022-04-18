@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_sharp/models/cart_item.dart';
+
+import '/models/cart_item.dart';
 
 //Cart Provider, manages all the data for the cart
 class Cart with ChangeNotifier {
@@ -8,6 +9,7 @@ class Cart with ChangeNotifier {
   Map<String, CartItem> get items {
     return {..._items};
   }
+
   //getter for items
 
   int get cartCount {
@@ -80,12 +82,4 @@ class Cart with ChangeNotifier {
   }
 //delete all items in cart
 
-// void removeSingleItem(String productID){
-//     if(!_items.containsKey(productID)) {
-//       return;
-//     }
-//     if(_items[productID]!.quantity>1){
-//       _items.update(productID, (existingCartItem) => null)
-//     }
-// }
 }
