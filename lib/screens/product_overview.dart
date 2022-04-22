@@ -76,8 +76,11 @@ class _ProductOverviewState extends State<ProductOverview> {
             ),
           ],
         ),
-        body: ProductsGrid(
-          showFavorites: _showFavorites,
+        body: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: ProductsGrid(
+            showFavorites: _showFavorites,
+          ),
         )
         //body: ListViewBuilder(),
         );

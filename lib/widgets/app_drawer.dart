@@ -27,7 +27,9 @@ class AppDrawer extends StatelessWidget {
               buttonTitle: "Shop",
               //routeName: ProductOverview.routeName,
               leadingWidget: const Icon(Icons.store),
-              onTap: () => Navigator.of(context).pushReplacementNamed(ProductOverview.routeName), // Replace the screen with shop section
+              onTap: () => Navigator.of(context)
+                  .pushReplacementNamed(ProductOverview.routeName)
+                  .then((value) => Navigator.of(context).pop()), // Replace the screen with shop section
             ),
             DrawerButton(
               buttonTitle: "Past Orders",

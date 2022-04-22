@@ -22,4 +22,9 @@ class Product with ChangeNotifier {
   bool checkFavorite() {
     return isFavorite;
   }
+
+  void printDetails() {
+    //method to print details of a product for debugging purposes
+    print("title: $title, id: $id, description: $description, price: $price\nimage url: $imageUrl");
+  }
 }

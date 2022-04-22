@@ -31,7 +31,7 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           title: Text(
             product.title,
-            overflow: TextOverflow.visible,
+            overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
           ),
           leading: Consumer<Product>(
