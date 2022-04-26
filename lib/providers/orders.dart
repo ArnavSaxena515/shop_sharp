@@ -1,22 +1,76 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+
+import 'package:shop_sharp/utilities/url_links.dart';
 import '../models/cart_item.dart';
+import 'package:http/http.dart' as http;
 
-class OrderItem {
-  final String id;
-  final double amount;
-  final List<CartItem> products;
-  final DateTime dateTime;
-
-  OrderItem({required this.id, required this.amount, required this.products, required this.dateTime});
-}
+import '../models/order_item.dart';
 
 class Orders with ChangeNotifier {
-  final List<OrderItem> _orders = [];
+  List<OrderItem> _orders = [];
 
   List<OrderItem> get orders => [..._orders];
 
-  void addOrder(List<CartItem> cartProducts, double total) {
-    _orders.insert(0, OrderItem(id: DateTime.now().toString(), amount: total, products: cartProducts, dateTime: DateTime.now()));
+  Future<void> fetchAndUpdateOrders() async {
+    final url = Uri.parse(databaseURL + "orders.json");
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<OrderItem> loadedOrders = [];
+      // ignore: unnecessary_null_comparison
+      if (extractedData == null || extractedData.isEmpty) {
+        return;
+      }
+      extractedData.forEach((orderID, orderData) {
+        List<CartItem> cartItemsList = List.generate(orderData['products'].length, (index) => CartItem.fromJson(orderData['products'][index])
+            //     CartItem(
+            //   title: orderData['products'][index]["title"],
+            //   cartItemID: orderData['products'][index]["cartItemID"],
+            //   price: orderData['products'][index]["price"],
+            //   quantity: orderData['products'][index]["quantity"],
+            //   productID: orderData['products'][index]["productID"],
+            // ),
+            );
+        loadedOrders.add(
+          OrderItem(
+            amount: orderData['amount'],
+            products: cartItemsList,
+            dateTime: DateTime.parse(orderData['dateTime']),
+          ),
+        );
+      });
+      _orders = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
     notifyListeners();
+  }
+
+  Future<int> addOrder(List<CartItem> cartProducts, double total) async {
+    try {
+      final timeStamp = DateTime.now().toIso8601String();
+      final url = Uri.parse(databaseURL + "orders.json");
+      final response = await http.post(url,
+          body: json.encode({
+            "amount": total,
+            "products": cartProducts,
+            "dateTime": timeStamp,
+          }));
+      if (response.statusCode >= 400) {
+        throw HttpException("Could not add order\nError: ${response.statusCode}");
+      }
+
+      _orders.insert(0, OrderItem(amount: total, products: cartProducts, dateTime: DateTime.parse(timeStamp)));
+      return response.statusCode;
+    } catch (error) {
+      rethrow;
+    } finally {
+      notifyListeners();
+    }
+    // _orders.insert(0, OrderItem(amount: total, products: cartProducts, dateTime: DateTime.now()));
   }
 }

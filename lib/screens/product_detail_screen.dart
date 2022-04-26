@@ -19,6 +19,8 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     String itemID = ModalRoute.of(context)!.settings.arguments as String;
     Product product = Provider.of<Products>(context).items.firstWhere((element) => element.id == itemID);
+    product.printDetails();
+    //print("Description: ${product.description}");
     //provider to get the product details of the nearest product in the widget tree
     final AppBar appBar = AppBar();
     final MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -87,6 +89,7 @@ class ProductDetail extends StatelessWidget {
                         child: Text(
                           product.description,
                           textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ),
                       trailing: Text("\$${product.price.toString()}"),

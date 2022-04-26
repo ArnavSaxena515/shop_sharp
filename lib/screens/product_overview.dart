@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/products_provider.dart';
+import '../widgets/indicators.dart';
 import '/screens/cart_screen.dart';
 import '/widgets/app_drawer.dart';
 import '../providers/cart.dart';
@@ -24,6 +26,66 @@ class ProductOverview extends StatefulWidget {
 class _ProductOverviewState extends State<ProductOverview> {
   // final List<Product> loadedProducts;
   bool _showFavorites = false;
+
+  bool _isInit = false;
+  bool _isLoading = false;
+  bool _dataLoaded = false;
+
+  @override
+  Future<void> didChangeDependencies() async {
+    if (!_isInit) {
+      // method to fetch items from the backend.
+      //
+      // Provider.of<Products>(context).fetchAndSetProducts().catchError((error) {
+      //   return showDialog(
+      //       context: context,
+      //       builder: (_) => AlertDialog(
+      //             title: const Text("Error Loading Products"),
+      //             content: const Text("Products could not be loaded. Please try again later"),
+      //             actions: [
+      //               TextButton(
+      //                   onPressed: () {
+      //                     Navigator.of(context).pop();
+      //                   },
+      //                   child: const Text("Okay"))
+      //             ],
+      //           ));
+      // });
+
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        await Provider.of<Products>(context).fetchAndSetProducts().then((value) => _dataLoaded = true);
+        // await Provider.of<Orders>(context).fetchAndUpdateOrders();
+      } catch (error) {
+        // print("\n\n\nERROR FROM OVERVIEW");
+        _dataLoaded = false;
+        //print(error);
+        // ignore: prefer_void_to_null
+        showDialog<Null>(
+            context: context,
+            builder: (_) => AlertDialog(
+                  title: const Text("Error Loading Products"),
+                  content: const Text("Products could not be loaded. Please try again later"),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text("Okay"))
+                  ],
+                ));
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+
+    _isInit = true;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,12 +138,16 @@ class _ProductOverviewState extends State<ProductOverview> {
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 15.0),
-          child: ProductsGrid(
-            showFavorites: _showFavorites,
-          ),
-        )
+        body: _isLoading
+            ? const LoadingIndicator()
+            : _dataLoaded
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: ProductsGrid(
+                      showFavorites: _showFavorites,
+                    ),
+                  )
+                : const ErrorIndicator()
         //body: ListViewBuilder(),
         );
   }

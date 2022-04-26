@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_sharp/providers/products_provider.dart';
 
 import '/screens/product_detail_screen.dart';
 import '../providers/cart.dart';
@@ -42,8 +43,22 @@ class ProductItem extends StatelessWidget {
                 color: Colors.deepOrange,
                 //color: Colors.white,
               ),
-              onPressed: () {
+              onPressed: () async {
                 value.toggleFavorite();
+                //print(value.id);
+                try {
+                  await Provider.of<Products>(context, listen: false).updateProduct(value.id, value.copyWith(isFavorite: value.checkFavorite()));
+                } catch (error) {
+                  value.toggleFavorite();
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      error.toString(),
+                      textAlign: TextAlign.center,
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ));
+                }
               },
             ),
           ),

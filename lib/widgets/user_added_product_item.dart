@@ -32,7 +32,45 @@ class UserAddedProductItem extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                          title: Text("Delete ${product.title}?"),
+                          content: Text("Are you sure you want to delete ${product.title} from your listings?"),
+                          actions: [
+                            TextButton(
+                                onPressed: () async {
+                                  try {
+                                    await Provider.of<Products>(context, listen: false).deleteProduct(product.id);
+                                    ScaffoldMessenger.of(context).clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      duration: const Duration(seconds: 2),
+                                      content: Text(
+                                        "Product ${product.title} deleted.",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } catch (error) {
+                                    ScaffoldMessenger.of(context).clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      duration: const Duration(seconds: 2),
+                                      content: Text(
+                                        "Sorry, product ${product.title} could not be deleted. Please try again",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } finally {
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                child: const Text("Yes")),
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("No")),
+                          ],
+                        ));
               },
               icon: const Icon(Icons.delete),
               color: Theme.of(context).errorColor,
