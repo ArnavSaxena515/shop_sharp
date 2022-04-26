@@ -28,12 +28,12 @@ class _CartScreenState extends State<CartScreen> {
         builder: (BuildContext context, cart, Widget? child) => Column(
           children: [
             Card(
-                  margin: const EdgeInsets.all(15),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+              margin: const EdgeInsets.all(15),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
                     Chip(
                       backgroundColor: Theme.of(context).primaryColor,
                       label: Text(
@@ -103,20 +103,20 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                           )
                   ],
-                    ),
-                  ),
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (_, index) {
-                      final cartItem = cart.items.values.toList()[index];
-                      return CartItemGestureHandler(cartItem: cartItem);
-                    },
-                    itemCount: cart.cartCount,
-                  ),
-                )
-              ],
+              ),
             ),
+            Expanded(
+              child: ListView.builder(
+                itemBuilder: (_, index) {
+                  final cartItem = cart.items.values.toList()[index];
+                  return CartItemGestureHandler(cartItem: cartItem);
+                },
+                itemCount: cart.cartCount,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
