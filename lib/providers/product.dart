@@ -1,5 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:shop_sharp/utilities/url_links.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_sharp/models/http_exception.dart';
 
 part 'product.g.dart';
 
@@ -41,9 +45,29 @@ class Product with ChangeNotifier {
     );
   }
 
-  void toggleFavorite() {
+  Future<void> toggleFavorite(String? token, String? userID) async {
     isFavorite = !isFavorite;
     notifyListeners();
+
+    final url = Uri.parse(databaseURL + "userFavorites/$userID/$id.json?auth=$token");
+
+    try {
+      final response = isFavorite
+          ? await http.put(url,
+              body: json.encode({
+                'isFavorite': isFavorite,
+              }))
+          : await http.delete(url);
+
+      if (response.statusCode >= 400) {
+        isFavorite = !isFavorite;
+        throw HttpException(message: "Request could not be completed\nError ${response.statusCode}");
+      }
+    } catch (error) {
+      rethrow;
+    }
+
+    // notifyListeners();
   }
 
   bool checkFavorite() {

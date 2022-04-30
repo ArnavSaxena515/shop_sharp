@@ -45,6 +45,7 @@ class Cart with ChangeNotifier {
 
   void addItem({required String productID, required double price, required String title}) {
     if (_items.containsKey(productID)) {
+      //todo implement local storage to store the items in the cart so they can persist over sessions
       _items.update(
           productID,
           (existingCartItem) => CartItem(

@@ -30,6 +30,8 @@ class OrdersScreen extends StatelessWidget {
               );
             } else {
               if (dataSnapShot.error != null) {
+                print(dataSnapShot.error);
+                print("ORDERS SCREEN ERROR");
                 return const ErrorIndicator(errorMessage: "Something went wrong. Please try again");
               } else {
                 return Consumer<Orders>(

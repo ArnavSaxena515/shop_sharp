@@ -1,5 +1,5 @@
-class HttpExtension implements Exception {
-  HttpExtension({required this.message});
+class HttpException implements Exception {
+  HttpException({required this.message});
 
   final String message;
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../providers/auth.dart';
 import '../providers/product.dart';
 import '../providers/products_provider.dart';
 
@@ -110,7 +111,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       //  newProduct.printDetails();
 
       if (id.isEmpty) {
-        await Provider.of<Products>(context, listen: false).addNewProduct(newProduct).catchError((error) {
+        final userId = Provider.of<Auth>(context, listen: false).userId;
+        await Provider.of<Products>(context, listen: false).addNewProduct(newProduct, userId).catchError((error) {
           // ignore: prefer_void_to_null
           return showDialog<Null>(
               context: context,

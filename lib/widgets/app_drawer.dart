@@ -1,7 +1,9 @@
 //App drawer widget to be shared across all app screens where required
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/auth.dart';
 import '/screens/orders_screen.dart';
 import '/screens/product_overview.dart';
 import '/screens/user_products_screen.dart';
@@ -54,7 +56,15 @@ class AppDrawer extends StatelessWidget {
               onTap: () => Navigator.of(context).pushNamed(UserProductScreen.routeName).then(
                     (value) => Navigator.of(context).pop(),
                   ),
-            )
+            ),
+            DrawerButton(
+                buttonTitle: "Logout",
+                leadingWidget: const Icon(Icons.logout_sharp),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed('/');
+                  Provider.of<Auth>(context, listen: false).logout();
+                }),
           ],
         ),
       ),

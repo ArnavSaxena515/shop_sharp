@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_sharp/providers/products_provider.dart';
+import 'package:shop_sharp/providers/auth.dart';
 
 import '/screens/product_detail_screen.dart';
 import '../providers/cart.dart';
@@ -13,6 +13,8 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Product product = Provider.of<Product>(context, listen: false); //using consumer instead to only rebuild what actually can change
+    final authData = Provider.of<Auth>(context, listen: false);
+    //product.printDetails();
     final Cart cart = Provider.of<Cart>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -37,30 +39,31 @@ class ProductItem extends StatelessWidget {
           ),
           leading: Consumer<Product>(
             //Consumer widget to access the Product provider which contains the details of the product user selected
-            builder: (BuildContext context, value, Widget? child) => IconButton(
-              icon: Icon(
-                value.checkFavorite() ? Icons.favorite : Icons.favorite_border,
-                color: Colors.deepOrange,
-                //color: Colors.white,
-              ),
-              onPressed: () async {
-                value.toggleFavorite();
-                //print(value.id);
-                try {
-                  await Provider.of<Products>(context, listen: false).updateProduct(value.id, value.copyWith(isFavorite: value.checkFavorite()));
-                } catch (error) {
-                  value.toggleFavorite();
-                  ScaffoldMessenger.of(context).clearSnackBars();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Text(
-                      error.toString(),
-                      textAlign: TextAlign.center,
-                    ),
-                    duration: const Duration(seconds: 2),
-                  ));
-                }
-              },
-            ),
+            builder: (BuildContext context, value, Widget? child) {
+              value.printDetails();
+              return IconButton(
+                icon: Icon(
+                  value.checkFavorite() ? Icons.favorite : Icons.favorite_border,
+                  color: Colors.deepOrange,
+                  //color: Colors.white,
+                ),
+                onPressed: () async {
+                  //print(value.id);
+                  try {
+                    value.toggleFavorite(authData.token, authData.userId);
+                  } catch (error) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                        error.toString(),
+                        textAlign: TextAlign.center,
+                      ),
+                      duration: const Duration(seconds: 2),
+                    ));
+                  }
+                },
+              );
+            },
           ),
           trailing: IconButton(
             icon: Icon(

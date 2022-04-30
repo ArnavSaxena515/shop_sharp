@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth.dart';
 import '../providers/products_provider.dart';
 import '../widgets/indicators.dart';
 import '/screens/cart_screen.dart';
@@ -32,6 +33,12 @@ class _ProductOverviewState extends State<ProductOverview> {
   bool _dataLoaded = false;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Future<void> didChangeDependencies() async {
     if (!_isInit) {
       // method to fetch items from the backend.
@@ -56,10 +63,11 @@ class _ProductOverviewState extends State<ProductOverview> {
         setState(() {
           _isLoading = true;
         });
-        await Provider.of<Products>(context).fetchAndSetProducts().then((value) => _dataLoaded = true);
-        // await Provider.of<Orders>(context).fetchAndUpdateOrders();
+        final authData = Provider.of<Auth>(context, listen: false);
+        await Provider.of<Products>(context).fetchAndSetProducts(userID: authData.userId).then((value) => _dataLoaded = true);
       } catch (error) {
-        // print("\n\n\nERROR FROM OVERVIEW");
+        print("\n\n\nERROR FROM OVERVIEW");
+        print(error);
         _dataLoaded = false;
         //print(error);
         // ignore: prefer_void_to_null
@@ -90,6 +98,7 @@ class _ProductOverviewState extends State<ProductOverview> {
   @override
   Widget build(BuildContext context) {
     // final Cart cart = Provider.of<Cart>(context);
+
     return Scaffold(
         drawer: const AppDrawer(),
         appBar: AppBar(

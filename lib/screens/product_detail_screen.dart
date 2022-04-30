@@ -19,7 +19,7 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     String itemID = ModalRoute.of(context)!.settings.arguments as String;
     Product product = Provider.of<Products>(context).items.firstWhere((element) => element.id == itemID);
-    product.printDetails();
+    //product.printDetails();
     //print("Description: ${product.description}");
     //provider to get the product details of the nearest product in the widget tree
     final AppBar appBar = AppBar();

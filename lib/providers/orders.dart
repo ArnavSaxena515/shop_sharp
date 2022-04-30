@@ -13,12 +13,22 @@ class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
 
   List<OrderItem> get orders => [..._orders];
+  String? userId;
+  String? authToken;
+
+  set authTokenSetter(String? value) => authToken = value;
+
+  set ordersSetter(List<OrderItem> value) => _orders = value;
+
+  set userIdSetter(String? value) => userId = value;
 
   Future<void> fetchAndUpdateOrders() async {
-    final url = Uri.parse(databaseURL + "orders.json");
+    final url = Uri.parse(databaseURL + "orders/$userId.json?auth=$authToken");
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      print("ORDERS EXTRACTED DATA");
+      print(extractedData);
       final List<OrderItem> loadedOrders = [];
       // ignore: unnecessary_null_comparison
       if (extractedData == null || extractedData.isEmpty) {
@@ -53,7 +63,7 @@ class Orders with ChangeNotifier {
   Future<int> addOrder(List<CartItem> cartProducts, double total) async {
     try {
       final timeStamp = DateTime.now().toIso8601String();
-      final url = Uri.parse(databaseURL + "orders.json");
+      final url = Uri.parse(databaseURL + "orders/$userId.json?auth=$authToken");
       final response = await http.post(url,
           body: json.encode({
             "amount": total,

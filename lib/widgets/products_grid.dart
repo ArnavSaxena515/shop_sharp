@@ -13,15 +13,17 @@ class ProductsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
     final products = showFavorites ? productsData.favoriteItems : productsData.items;
+    // productsData.favoriteItems.forEach((element) {
+    //   element.printDetails();
+    // });
 
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 3 / 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
       itemCount: products.length,
-      itemBuilder: (productOverviewScreenContext, index) => ChangeNotifierProvider.value(
-        //Grid items wrapped by a provider.value to provide them the product details from the items available.
-        value: products[index],
-        child: const ProductItem(),
-      ),
+      itemBuilder: (productOverviewScreenContext, index) {
+        //products[index].printDetails();
+        return ChangeNotifierProvider.value(key: UniqueKey(), value: products[index], child: const ProductItem());
+      },
     );
   }
 }

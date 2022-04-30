@@ -1,26 +1,30 @@
 name: shop_sharp
 description: A new Flutter e-commerce app.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 3.0.0+1
+version: 4.0.0+1
 environment:
   sdk: ">=2.16.1 <3.0.0"
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.4
   provider: ^6.0.2
   photo_view: ^0.13.0
   intl: ^0.17.0
   transparent_image: ^2.0.0
   http: ^0.13.4
-  json_serializable: ^6.1.6
+  json_serializable: ^6.2.0
   build_runner: ^2.1.10
+  shared_preferences: ^2.0.13
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^1.0.4
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/ecommerce.png
   fonts:
     - family: Lato
       fonts:
