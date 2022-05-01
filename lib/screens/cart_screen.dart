@@ -45,61 +45,64 @@ class _CartScreenState extends State<CartScreen> {
                     _isLoading
                         ? const CircularProgressIndicator()
                         : AbsorbPointer(
-                            absorbing: cart.items.values.isEmpty && _isLoading,
-                            child: TextButton(
-                              onPressed: () async {
-                                try {
-                                  setState(() {
-                                    _isLoading = true;
-                                  });
-                                  final response = await Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
-                                  if (response < 400) cart.clearCart();
-                                  showDialog(
-                                      context: context,
-                                      builder: (ctx) => AlertDialog(
-                                            backgroundColor: Theme.of(context).primaryColor,
-                                            content: const Text(
-                                              "Order Placed!\n Thank you for shopping with us",
-                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const Text(
-                                                    "Okay",
-                                                    style: TextStyle(color: Colors.white),
-                                                  )),
-                                              TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pushNamed(OrdersScreen.routeName).then((value) => Navigator.of(context).pop());
-                                                  },
-                                                  child: const Text("View Orders", style: TextStyle(color: Colors.white))),
-                                            ],
-                                            //todo show order summary or something
-                                          )).then((value) => Navigator.of(context).pop());
-                                } catch (error) {
-                                  Navigator.of(context).pop();
-                                  ScaffoldMessenger.of(context).clearSnackBars();
-                                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                      "Order could not be placed\n$error",
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ));
-                                } finally {
-                                  setState(() {
-                                    _isLoading = false;
-                                  });
-                                }
-                              },
-                              child: const Text(
-                                "ORDER NOW",
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                            absorbing: cart.items.values.isEmpty || _isLoading,
+                            child: Visibility(
+                              visible: cart.items.values.isEmpty || _isLoading,
+                              child: TextButton(
+                                onPressed: () async {
+                                  try {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    final response = await Provider.of<Orders>(context, listen: false).addOrder(cart.items.values.toList(), cart.totalAmount);
+                                    if (response < 400) cart.clearCart();
+                                    showDialog(
+                                        context: context,
+                                        builder: (ctx) => AlertDialog(
+                                              backgroundColor: Theme.of(context).primaryColor,
+                                              content: const Text(
+                                                "Order Placed!\n Thank you for shopping with us",
+                                                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: const Text(
+                                                      "Okay",
+                                                      style: TextStyle(color: Colors.white),
+                                                    )),
+                                                TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pushNamed(OrdersScreen.routeName).then((value) => Navigator.of(context).pop());
+                                                    },
+                                                    child: const Text("View Orders", style: TextStyle(color: Colors.white))),
+                                              ],
+                                              //todo show order summary or something
+                                            )).then((value) => Navigator.of(context).pop());
+                                  } catch (error) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context).clearSnackBars();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                      content: Text(
+                                        "Order could not be placed\n$error",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      duration: const Duration(seconds: 2),
+                                    ));
+                                  } finally {
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
+                                  }
+                                },
+                                child: const Text(
+                                  "ORDER NOW",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                // style: ButtonStyleStyle(color: Theme.of(context).primaryColor),
                               ),
-                              // style: ButtonStyleStyle(color: Theme.of(context).primaryColor),
                             ),
                           )
                   ],
@@ -108,6 +111,7 @@ class _CartScreenState extends State<CartScreen> {
             ),
             Expanded(
               child: ListView.builder(
+                key: UniqueKey(),
                 itemBuilder: (_, index) {
                   final cartItem = cart.items.values.toList()[index];
                   return CartItemGestureHandler(cartItem: cartItem);
