@@ -45,9 +45,9 @@ class _CartScreenState extends State<CartScreen> {
                     _isLoading
                         ? const CircularProgressIndicator()
                         : AbsorbPointer(
-                            absorbing: cart.items.values.isEmpty || _isLoading,
+                            absorbing: cart.items.values.isEmpty,
                             child: Visibility(
-                              visible: cart.items.values.isEmpty || _isLoading,
+                              visible: cart.items.values.isNotEmpty,
                               child: TextButton(
                                 onPressed: () async {
                                   try {

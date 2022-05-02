@@ -103,7 +103,7 @@ class AuthCard extends StatefulWidget {
   State<AuthCard> createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard> with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _authFormKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   final Map<String, String> _authData = {
@@ -111,6 +111,47 @@ class _AuthCardState extends State<AuthCard> {
     "password": '',
   };
   bool _isLoading = false;
+
+  // ? _controller;
+  // ? _heightAnimation;
+  late final AnimationController _controller = AnimationController(vsync: this, duration: Duration(milliseconds: _animationDurationInMilliseconds));
+  late final Animation<Offset> _slideAnimation =
+      Tween<Offset>(begin: const Offset(0, -1.5), end: const Offset(00, 0)).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+  late final Animation<double> _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+
+  final int _animationDurationInMilliseconds = 300;
+
+  // final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _opacityAnimation.addListener(() {
+      setState(() {});
+    });
+    // _controller =
+    // _heightAnimation =
+
+    // _heightAnimation.addListener(() {
+    //   setState(() {});
+    // });
+
+    //_scrollController.animateTo(_scrollController.position.maxScrollExtent, duration: const Duration(milliseconds: 200), curve: Curves.easeIn);
+
+    // _scrollController.addListener(() {
+    //   setState(() {});
+    // });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _emailFieldFocusNode.dispose();
+    _passwordFieldFocusNode.dispose();
+    _confirmPasswordFieldFocusNode.dispose();
+    super.dispose();
+  }
+
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _submit() async {
@@ -178,10 +219,13 @@ class _AuthCardState extends State<AuthCard> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
+
+      _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.Login;
       });
+      _controller.reverse();
     }
   }
 
@@ -197,11 +241,19 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
+      child:
+          // AnimatedBuilder(
+          //   animation: _heightAnimation,
+          //   builder: (ctx, animationChild) =>
+          AnimatedContainer(
         height: _authMode == AuthMode.Signup ? 320 : 260,
-        constraints: BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 320 : 260),
+        constraints: BoxConstraints(
+          minHeight: _authMode == AuthMode.Signup ? 320 : 260,
+          //minHeight: _heightAnimation.value.height,
+        ),
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
+        duration: Duration(milliseconds: _animationDurationInMilliseconds),
         child: Form(
           key: _authFormKey,
           child: SingleChildScrollView(
@@ -248,23 +300,29 @@ class _AuthCardState extends State<AuthCard> {
                   },
                 ),
                 if (_authMode == AuthMode.Signup)
-                  TextFormField(
-                    focusNode: _confirmPasswordFieldFocusNode,
-                    enabled: _authMode == AuthMode.Signup,
-                    decoration: const InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) {
-                      _submit();
-                    },
-                    validator: _authMode == AuthMode.Signup
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match!';
-                            }
-                            return null;
-                          }
-                        : null,
+                  FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: SlideTransition(
+                      position: _slideAnimation,
+                      child: TextFormField(
+                        focusNode: _confirmPasswordFieldFocusNode,
+                        enabled: _authMode == AuthMode.Signup,
+                        decoration: const InputDecoration(labelText: 'Confirm Password'),
+                        obscureText: true,
+                        textInputAction: TextInputAction.done,
+                        onFieldSubmitted: (_) {
+                          _submit();
+                        },
+                        validator: _authMode == AuthMode.Signup
+                            ? (value) {
+                                if (value != _passwordController.text) {
+                                  return 'Passwords do not match!';
+                                }
+                                return null;
+                              }
+                            : null,
+                      ),
+                    ),
                   ),
                 const SizedBox(
                   height: 20,

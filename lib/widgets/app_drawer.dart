@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_sharp/utilities/custom_route.dart';
 
 import '../providers/auth.dart';
 import '/screens/orders_screen.dart';
@@ -38,6 +39,10 @@ class AppDrawer extends StatelessWidget {
               //  routeName: OrdersScreen.routeName,
               leadingWidget: const Icon(Icons.payment),
               onTap: () => Navigator.of(context).pushNamed(OrdersScreen.routeName).then((value) => Navigator.of(context).pop()),
+
+              // Navigator.of(context).push(CustomRoute(
+              //   builder: (_) => const OrdersScreen(),
+              // ))
               // Push the orders screen and pop drawer once app returns from the orders screen
             ),
             DrawerButton(

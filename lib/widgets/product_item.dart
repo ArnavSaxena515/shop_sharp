@@ -25,10 +25,18 @@ class ProductItem extends StatelessWidget {
             //On tapping the image the user is taken to a screen where the details of the selected
             //product are displayed
           },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
+          child: Hero(
+            tag: product.id,
+            child: FadeInImage(
+              image: NetworkImage(product.imageUrl),
+              placeholder: const AssetImage('assets/images/product-placeholder.png'),
+              fit: BoxFit.fill,
+            ),
           ),
+          // Image.network(
+          //   product.imageUrl,
+          //   fit: BoxFit.cover,
+          // ),
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,

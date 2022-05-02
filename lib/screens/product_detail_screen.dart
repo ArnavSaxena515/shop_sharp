@@ -46,6 +46,7 @@ class ProductDetail extends StatelessWidget {
           ),
         ],
       ),
+      //todo maybe add sliver screen
       body: Column(
         children: [
           ClipRRect(
@@ -66,13 +67,18 @@ class ProductDetail extends StatelessWidget {
                         );
                       }));
                     },
-                    child: Hero(
-                      tag: 'imageHero',
-                      child: Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                        height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.5,
-                      ),
+                    child: Stack(
+                      children: [
+                        const Hero(tag: 'imageHero', child: SizedBox()),
+                        Hero(
+                          tag: product.id,
+                          child: Image.network(
+                            product.imageUrl,
+                            fit: BoxFit.cover,
+                            height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.5,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Container(

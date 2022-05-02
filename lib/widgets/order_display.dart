@@ -20,28 +20,36 @@ class _OrderDisplayState extends State<OrderDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text("Amount Paid:\t\t\$${widget.orderItem.amount.toStringAsFixed(2)}"),
-            subtitle: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Text(DateFormat('dd/MM/yyyy\t\thh:mm').format(widget.orderItem.dateTime)), //Date time format displayer
+    return InkWell(
+      onTap: () => setState(() {
+        expanded = !expanded; //if expanded, details displayed
+      }),
+      child: Card(
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text("Amount Paid:\t\t\$${widget.orderItem.amount.toStringAsFixed(2)}"),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(DateFormat('dd/MM/yyyy\t\thh:mm').format(widget.orderItem.dateTime)), //Date time format display
+              ),
+              trailing: Icon(
+                // onPressed: () => setState(() {
+                //   expanded = !expanded; //if expanded, details displayed
+                // }),
+                expanded ? Icons.expand_less : Icons.expand_more,
+              ),
             ),
-            trailing: IconButton(
-              onPressed: () => setState(() {
-                expanded = !expanded; //if expanded, details displayed
-              }),
-              icon: expanded ? const Icon(Icons.expand_less) : const Icon(Icons.expand_more),
-            ),
-          ),
-          if (expanded)
-            Container(
+            AnimatedContainer(
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 15),
-              height: min(widget.orderItem.products.length * 20.0 + 10.0, 100.0), // minimum of 100 or the other calculated value to
+              height: expanded ? min(widget.orderItem.products.length * 20.0 + 10.0, 100.0) : 0,
+              // minimum of 100 or the other calculated value to
               // restrict the height of the list of the order details
+              constraints: BoxConstraints(
+                minHeight: expanded ? min(widget.orderItem.products.length * 20.0 + 10.0, 100.0) : 0,
+              ),
+              duration: const Duration(milliseconds: 150),
               child: ListView.builder(
                   itemCount: widget.orderItem.products.length,
                   itemBuilder: (_, index) {
@@ -61,7 +69,8 @@ class _OrderDisplayState extends State<OrderDisplay> {
                     );
                   }),
             )
-        ],
+          ],
+        ),
       ),
     );
   }

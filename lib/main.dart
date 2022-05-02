@@ -4,6 +4,7 @@ import 'package:shop_sharp/providers/auth.dart';
 import 'package:shop_sharp/screens/auth_screen.dart';
 import 'package:shop_sharp/screens/edit_products_screen.dart';
 import 'package:shop_sharp/screens/splash_screen.dart';
+import 'package:shop_sharp/utilities/custom_route.dart';
 import 'package:shop_sharp/widgets/indicators.dart';
 
 import '/providers/cart.dart';
@@ -54,6 +55,13 @@ class MyApp extends StatelessWidget {
       child: Consumer<Auth>(
           builder: (context, auth, _) => MaterialApp(
                 theme: ThemeData(
+                  pageTransitionsTheme: PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: CustomRouteBuilder(),
+                      TargetPlatform.iOS: CustomRouteBuilder(),
+                      TargetPlatform.windows: CustomRouteBuilder(),
+                    },
+                  ),
                   primaryColor: Colors.purple,
                   fontFamily: 'Lato',
                   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple).copyWith(
