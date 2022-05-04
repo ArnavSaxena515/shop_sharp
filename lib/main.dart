@@ -5,7 +5,6 @@ import 'package:shop_sharp/screens/auth_screen.dart';
 import 'package:shop_sharp/screens/edit_products_screen.dart';
 import 'package:shop_sharp/screens/splash_screen.dart';
 import 'package:shop_sharp/utilities/custom_route.dart';
-import 'package:shop_sharp/widgets/indicators.dart';
 
 import '/providers/cart.dart';
 import '/providers/orders.dart';

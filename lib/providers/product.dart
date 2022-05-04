@@ -76,6 +76,6 @@ class Product with ChangeNotifier {
 
   void printDetails() {
     //method to print details of a product for debugging purposes
-    print("title: $title, id: $id, description: $description, price: $price\nimage url: $imageUrl");
+    //print("title: $title, id: $id, description: $description, price: $price\nimage url: $imageUrl");
   }
 }

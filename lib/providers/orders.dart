@@ -27,8 +27,8 @@ class Orders with ChangeNotifier {
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print("ORDERS EXTRACTED DATA");
-      print(extractedData);
+      // print("ORDERS EXTRACTED DATA");
+      //print(extractedData);
       final List<OrderItem> loadedOrders = [];
       // ignore: unnecessary_null_comparison
       if (extractedData == null || extractedData.isEmpty) {

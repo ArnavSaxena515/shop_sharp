@@ -110,25 +110,25 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> autoLogin() async {
-    print("Autologin called");
+    // print("Autologin called");
     final sharedPrefs = await SharedPreferences.getInstance();
     final storedData = json.decode(sharedPrefs.getString('userData')!) as Map<String, dynamic>;
     // print("SHARED PREFS USER DATA:");
     // print(sharedPrefs.getString('userData'));
     if (storedData.isEmpty) {
-      print("Autologin failed, no user data found");
+      // print("Autologin failed, no user data found");
       // shared preference empty, no user data stored, so automatic login fails.
       return false;
     }
 
     final expiryTime = DateTime.parse(storedData['expirationTime']);
     if (DateTime.now().isAfter(expiryTime)) {
-      print("Autologin failed, token expired");
+      //print("Autologin failed, token expired");
 
       // if time right now, is after the expiration time, that means the token for the user has expired, so auto login fails.
       return false;
     }
-    print("AUTOLOGIN SUCCESSFUL");
+    // print("AUTOLOGIN SUCCESSFUL");
     _token = storedData['token'];
     _userID = storedData['userID'];
     _expirationTime = expiryTime;

@@ -171,10 +171,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
     });
   }
 
-  bool _isImageURlValid(String url) {
-    //todo implement regex to validate image url
-    return true;
-  }
+  // bool _isImageURlValid(String url) {
+  //   //todo implement regex to validate image url
+  //   return true;
+  // }
 
   @override
   Widget build(BuildContext context) {

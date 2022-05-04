@@ -66,8 +66,8 @@ class _ProductOverviewState extends State<ProductOverview> {
         final authData = Provider.of<Auth>(context, listen: false);
         await Provider.of<Products>(context).fetchAndSetProducts(userID: authData.userId).then((value) => _dataLoaded = true);
       } catch (error) {
-        print("\n\n\nERROR FROM OVERVIEW");
-        print(error);
+        //print("\n\n\nERROR FROM OVERVIEW");
+        //print(error);
         _dataLoaded = false;
         //print(error);
         // ignore: prefer_void_to_null

@@ -60,10 +60,10 @@ class Products with ChangeNotifier {
     final fetchUserAddedProductsUrl = Uri.parse('${databaseURL}products.json?auth=$authToken&orderBy="sellerId"&equalTo="$userID"');
     try {
       final fetchAllProductsResponse = await http.get(fetchUrl);
-      print(fetchAllProductsResponse.body);
+      //print(fetchAllProductsResponse.body);
       final fetchAllProductsResponseData = json.decode(fetchAllProductsResponse.body) as Map<String, dynamic>;
-      print("FETCH ALL RESPONSE:");
-      print(fetchAllProductsResponseData);
+      //print("FETCH ALL RESPONSE:");
+      //print(fetchAllProductsResponseData);
       if (fetchAllProductsResponse.statusCode >= 400) {
         throw HttpException(message: fetchAllProductsResponse.body);
       }
@@ -77,22 +77,23 @@ class Products with ChangeNotifier {
       List<String?> favoritesId = [];
       if (userID!.isNotEmpty) {
         final favoritesData = await http.get(Uri.parse(databaseURL + "userFavorites/$userID.json?auth=$authToken"));
-        print("FAVOURITES STUFF");
-        print(favoritesData.body);
-        print("FAV DATA DECODED");
+        //print("FAVOURITES STUFF");
+        //print(favoritesData.body);
+        //print("FAV DATA DECODED");
 
         try {
           final favDataDecoded = json.decode(favoritesData.body) as Map<String, dynamic>;
-          print(favDataDecoded);
+          //print(favDataDecoded);
+          // ignore: unnecessary_null_comparison
           if (favDataDecoded != null && favDataDecoded.isNotEmpty) {
-            print("ALL GOOD HERE, LESSGO");
+            //print("ALL GOOD HERE, LESSGO");
             favDataDecoded.forEach((key, value) {
               favoritesId.add(key);
             });
           }
         } catch (error) {
-          print(error);
-          print("favs prolly empty");
+          //print(error);
+          //print("favs prolly empty");
           favoritesId = [];
         }
       }
@@ -112,7 +113,7 @@ class Products with ChangeNotifier {
 
       _items = loadedProducts;
     } catch (error) {
-      print("ERROR THROWN: SOMETHING WENT WRONG HERE 1");
+      //print("ERROR THROWN: SOMETHING WENT WRONG HERE 1");
       rethrow;
     }
     if (filterByUser && userID.isNotEmpty) {
